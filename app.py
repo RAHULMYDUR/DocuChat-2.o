@@ -32,7 +32,6 @@ def flatten(list_of_lists):
     return [item for sublist in list_of_lists for item in sublist]
 
 def save_feedback_to_json(feedback_data, file_name='feedback.json'):
-    """Save feedback data to a JSON file."""
     if os.path.exists(file_name):
         with open(file_name, 'r') as f:
             existing_data = json.load(f)
@@ -66,7 +65,6 @@ def export_to_docx(chat_history):
     return byte_io
 
 def load_feedback_from_json(file_name='feedback.json'):
-    """Load feedback data from a JSON file."""
     if os.path.exists(file_name):
         with open(file_name, 'r') as f:
             feedback_data = json.load(f)
@@ -75,7 +73,6 @@ def load_feedback_from_json(file_name='feedback.json'):
         return []
 
 def plot_feedback_analysis(feedback_data):
-    """Plot the feedback analysis using a bar graph."""
     df = pd.DataFrame(feedback_data)
     if not df.empty:
         df['feedback'] = df['feedback'].astype(str)
@@ -90,7 +87,6 @@ def plot_feedback_analysis(feedback_data):
         st.write("No feedback data available.")
 
 def main():
-    """Main function to run the Streamlit app."""
     st.sidebar.markdown(f"""
         <div style="text-align: center;">
             <img src="{logo_url}" width="100" height="100">
@@ -112,6 +108,8 @@ def main():
         ]
     if 'feedback' not in st.session_state:
         st.session_state.feedback = []
+    if 'feedback_file_exists' not in st.session_state:
+        st.session_state.feedback_file_exists = False
 
     if uploaded_files:
         documents = []
@@ -198,8 +196,15 @@ def main():
     
     # Feedback analysis button
     if st.sidebar.button("Show Feedback Analysis"):
+        st.session_state.show_feedback_analysis = not st.session_state.get('show_feedback_analysis', False)
+    
+    if st.session_state.get('show_feedback_analysis', False):
+        st.sidebar.subheader("Feedback Analysis")
         feedback_data = load_feedback_from_json()
         plot_feedback_analysis(feedback_data)
+
+    # Watermark at the bottom
+    st.markdown("<div style='text-align: center; font-size: 12px; color: gray;'>Developed by Rahul Mydur</div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
