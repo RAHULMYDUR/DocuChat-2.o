@@ -11,3 +11,7 @@ docx2txt
 scikit-learn
 streamlit_chat
 streamlit_extras
+streamlit==1.37.1
+numpy==1.23.4
+faiss-cpu==1.7.3
+pandas
