@@ -2,7 +2,7 @@ streamlit
 matplotlib
 seaborn
 pandas
-numpy==1.21.5
+numpy<2
 python-docx
 faiss-cpu
 requests
